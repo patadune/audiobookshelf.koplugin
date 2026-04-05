@@ -1,5 +1,6 @@
 local Dispatcher = require("dispatcher")
 local AudiobookshelfBrowser = require("audiobookshelf/audiobookshelfbrowser")
+local NetworkMgr = require("ui/network/manager")
 local UIManager = require("ui/uimanager")
 local WidgetContainer = require("ui/widget/container/widgetcontainer")
 local _ = require("gettext")
@@ -24,7 +25,10 @@ function Audiobookshelf:addToMainMenu(menu_items)
         text = _("Audiobookshelf"),
         sorting_hint = "tools",
         callback = function()
-            UIManager:show(AudiobookshelfBrowser:new())
+            local connect_callback = function()
+                UIManager:show(AudiobookshelfBrowser:new())
+            end
+            NetworkMgr:runWhenOnline(connect_callback)
         end
     }
 end
